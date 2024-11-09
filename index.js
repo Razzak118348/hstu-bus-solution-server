@@ -32,11 +32,12 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-const carftCollection = client.db('eceproject').collection('project');
+const bussCollection = client.db('eceproject').collection('project');
+const facultyRequest = client.db('eceproject').collection('facultyRequest')
 
 // get api
 app.get('/allbuss',async(req,res)=>{
-const cursor = carftCollection.find();
+const cursor = bussCollection.find();
 const result =await cursor.toArray();
 res.send(result)
 })
@@ -45,50 +46,45 @@ res.send(result)
 app.get('/allbuss/:id',async(req,res)=>{
   const id = req.params.id;
   const query = { _id: new ObjectId(id) };
-  const result =await carftCollection.findOne(query);
+  const result =await bussCollection.findOne(query);
   res.send(result);
 })
 
-//myArt and craft get rout
-// app.get('/mycraft/:email',async(req,res)=>{
-// const email = req.params.email;
-// const query = { email: email };
-// const result =await carftCollection.find(query).toArray();
+//myArt and buss get rout
+// app.get('/mybuss/:leaving_time',async(req,res)=>{
+// const leaving_time = req.params.leaving_time;
+// const query = { leaving_time: leaving_time };
+// const result =await bussCollection.find(query).toArray();
 // res.send(result)
 // })
 
 
 //creat data/ post  api
 app.post('/allbuss',async(req,res)=>{
-  const craft = req.body;
-  const result = await carftCollection.insertOne(craft);
+  const buss = req.body;
+  const result = await bussCollection.insertOne(buss);
   res.json(result)
 })
 
 //update  api
-app.patch('/singlebuss/:id',async(req,res)=>{
+app.patch('/allbuss/:id',async(req,res)=>{
   const id = req.params.id;
+  console.log(id)
   const filter = {_id : new ObjectId(id)}
   // console.log(filter)
   const options = { upsert: true };
-  const updateCraft = req.body;
+  const updateBuss = req.body;
 
-  const craft ={
+  const buss ={
     $set:{
-      username : updateCraft.username,
-      email : updateCraft.email,
-      price:updateCraft.price,
-      shortDescription:updateCraft.shortDescription,
-      image:updateCraft.image,
-      item_name:updateCraft.item_name,
-      subcategory_name:updateCraft.subcategory_name,
-      rating:updateCraft.rating,
-      customization:updateCraft.customization,
-      processingtime:updateCraft.processingtime,
-      stockstatus:updateCraft.stockstatus
+      category : updateBuss.category,
+      leaving_time : updateBuss.leaving_time,
+
+leaving_place:updateBuss.leaving_place,
+
     }
   }
-const result = await  carftCollection.updateOne(filter,craft,options);
+const result = await  bussCollection.updateOne(filter,buss,options);
 res.send(result)
 
 })
@@ -97,10 +93,27 @@ res.send(result)
 app.delete('/deletebuss/:id',async(req,res)=>{
   const id = req.params.id;
   const  query = { _id: new ObjectId(id) };
-  const result = await carftCollection.deleteOne(query);
+  const result = await bussCollection.deleteOne(query);
   res.json(result)
 
 })
+
+
+
+// faculty request
+// get api
+app.get('/allRequest',async(req,res)=>{
+  const cursor = facultyRequest.find();
+  const result =await cursor.toArray();
+  res.send(result)
+  })
+
+  app.post('/allRequest',async(req,res)=>{
+    const buss = req.body;
+    const result = await facultyRequest.insertOne(buss);
+    res.json(result)
+  })
+
 
 
     // Send a ping to confirm a successful connection
