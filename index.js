@@ -50,13 +50,6 @@ app.get('/allbuss/:id',async(req,res)=>{
   res.send(result);
 })
 
-//myArt and buss get rout
-// app.get('/mybuss/:leaving_time',async(req,res)=>{
-// const leaving_time = req.params.leaving_time;
-// const query = { leaving_time: leaving_time };
-// const result =await bussCollection.find(query).toArray();
-// res.send(result)
-// })
 
 
 //creat data/ post  api
@@ -113,7 +106,13 @@ app.get('/allRequest',async(req,res)=>{
     const result = await facultyRequest.insertOne(buss);
     res.json(result)
   })
+  app.delete('/allRequest/:id',async(req,res)=>{
+    const id = req.params.id;
+    const  query = { _id: new ObjectId(id) };
+    const result = await facultyRequest.deleteOne(query);
+    res.json(result)
 
+  })
 
 
     // Send a ping to confirm a successful connection
