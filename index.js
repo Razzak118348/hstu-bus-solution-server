@@ -74,6 +74,7 @@ app.patch('/allbuss/:id',async(req,res)=>{
       leaving_time : updateBuss.leaving_time,
 
 leaving_place:updateBuss.leaving_place,
+bus_number : updateBuss.bus_number
 
     }
   }
